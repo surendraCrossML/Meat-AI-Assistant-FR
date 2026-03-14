@@ -47,7 +47,7 @@ export default function Navbar() {
         className="fixed top-4 left-4 right-4 z-50"
       >
         <nav
-          className={`glass rounded-full px-5 py-3 flex items-center justify-between transition-all duration-300 ${
+          className={`glass rounded-full px-5 py-3 flex items-center justify-between transition-all duration-300 mx-auto w-[calc(100%-36rem)] ${
             scrolled ? "shadow-2xl" : "shadow-lg"
           }`}
           style={{
