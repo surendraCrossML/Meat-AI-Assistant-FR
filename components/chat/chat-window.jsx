@@ -28,7 +28,7 @@ export default function ChatWindow() {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.9, y: 20 }}
           transition={{ type: "spring", damping: 25, stiffness: 300 }}
-          className="fixed bottom-24 right-6 z-50 w-[90vw] sm:w-[380px] h-[70vh] sm:h-[520px] max-h-[calc(100vh-120px)]
+          className="fixed bottom-24 right-6 z-50 w-[90vw] sm:w-[420px] h-[70vh] sm:h-[740px] max-h-[calc(100vh-120px)]
                      glass-dark backdrop-blur-3xl rounded-3xl overflow-hidden shadow-2xl flex flex-col font-sans border border-white/10"
         >
           {/* Header */}
