@@ -93,11 +93,10 @@ function ShopContent() {
             </div>
             <button
               onClick={() => setShowFilters(!showFilters)}
-              className={`px-5 py-3 glass rounded-full border transition flex items-center gap-2 text-sm font-medium ${
-                showFilters
-                  ? "border-[#E86A33] text-[#E86A33]"
-                  : "border-border"
-              }`}
+              className={`px-5 py-3 glass rounded-full border transition flex items-center gap-2 text-sm font-medium ${showFilters
+                ? "border-[#E86A33] text-[#E86A33]"
+                : "border-border"
+                }`}
             >
               <SlidersHorizontal size={15} />
               Filters
@@ -110,11 +109,10 @@ function ShopContent() {
               <button
                 key={cat.id}
                 onClick={() => setSelectedCategory(cat.id)}
-                className={`px-4 py-2 rounded-full text-sm font-medium border transition-all ${
-                  selectedCategory === cat.id
-                    ? "bg-[#E86A33] dark:bg-[#FF7A3C] text-white border-transparent"
-                    : "glass border-border text-foreground/60 hover:border-[#E86A33]"
-                }`}
+                className={`px-4 py-2 rounded-full text-sm font-medium border transition-all ${selectedCategory === cat.id
+                  ? "bg-[#E86A33] dark:bg-[#FF7A3C] text-white border-transparent"
+                  : "glass border-border text-foreground/60 hover:border-[#E86A33]"
+                  }`}
               >
                 {cat.name}
               </button>
@@ -137,11 +135,10 @@ function ShopContent() {
                   <button
                     key={range.label}
                     onClick={() => setSelectedPrice(i)}
-                    className={`px-4 py-2 rounded-full text-sm font-medium border transition-all ${
-                      selectedPrice === i
-                        ? "bg-[#E86A33] dark:bg-[#FF7A3C] text-white border-transparent"
-                        : "glass border-border text-foreground/60 hover:border-[#E86A33]"
-                    }`}
+                    className={`px-4 py-2 rounded-full text-sm font-medium border transition-all ${selectedPrice === i
+                      ? "bg-[#E86A33] dark:bg-[#FF7A3C] text-white border-transparent"
+                      : "glass border-border text-foreground/60 hover:border-[#E86A33]"
+                      }`}
                   >
                     {range.label}
                   </button>

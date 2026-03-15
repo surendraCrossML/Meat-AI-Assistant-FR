@@ -43,7 +43,7 @@ export default function ChatInput() {
           disabled={isDisabled}
           whileHover={isDisabled ? {} : { scale: 1.05 }}
           whileTap={isDisabled ? {} : { scale: 0.95 }}
-          className="w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0
+          className="w-11 h-11 rounded-full flex items-center justify-center shrink-0
                    disabled:opacity-50 disabled:cursor-not-allowed
                    bg-[#E86A33] hover:bg-[#c85a28] dark:bg-[#FF7A3C] dark:hover:bg-[#d95f2e]
                    text-white shadow-md transition-colors"
