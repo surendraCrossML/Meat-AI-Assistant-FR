@@ -36,14 +36,14 @@ function RecipeCard({ recipe, onClick }) {
       onClick={() => onClick?.(recipe)}
     >
       {/* Image */}
-      <div className="relative h-64 overflow-hidden flex-shrink-0">
+      <div className="relative h-64 overflow-hidden shrink-0">
         <img
           src={recipe.image}
           alt={recipe.title}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
         {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-300" />
+        <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-300" />
 
         {/* Badge */}
         {recipe.badge && (
@@ -67,7 +67,7 @@ function RecipeCard({ recipe, onClick }) {
           {recipe.title}
         </h3>
         
-        <p className="text-sm text-foreground/60 line-clamp-2 mt-1 flex-grow">
+        <p className="text-sm text-foreground/60 line-clamp-2 mt-1 grow">
           {recipe.description}
         </p>
 

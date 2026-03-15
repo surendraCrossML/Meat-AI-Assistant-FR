@@ -47,20 +47,19 @@ export default function Navbar() {
         className="fixed top-4 left-4 right-4 z-50"
       >
         <nav
-          className={`glass rounded-full px-5 py-3 flex items-center justify-between transition-all duration-300 mx-auto w-[calc(100%-36rem)] ${
-            scrolled ? "shadow-2xl" : "shadow-lg"
-          }`}
+          className={`glass rounded-full px-4 md:px-5 py-3 flex items-center justify-between transition-all duration-300 mx-auto w-full max-w-7xl lg:w-[calc(100%-36rem)] ${scrolled ? "shadow-2xl" : "shadow-lg"
+            }`}
           style={{
             backdropFilter: "blur(12px)",
             WebkitBackdropFilter: "blur(12px)",
           }}
         >
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group">
+          <Link href="/" className="flex items-center gap-2 group shrink-0">
             <div className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-500 to-orange-700 flex items-center justify-center shadow-md group-hover:scale-105 transition-transform">
               <span className="text-white font-bold text-sm">M</span>
             </div>
-            <span className="font-bold text-lg tracking-tight text-foreground">
+            <span className="font-bold text-lg tracking-tight text-foreground hidden sm:inline-block">
               Meato
               <span className="text-[#E86A33] dark:text-[#FF7A3C]">.</span>
             </span>
@@ -137,9 +136,12 @@ export default function Navbar() {
               animate={{ opacity: 1, y: 0, scaleY: 1 }}
               exit={{ opacity: 0, y: -8, scaleY: 0.95 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
-              className="mt-2 glass rounded-2xl overflow-hidden"
+              className="mt-2 glass rounded-3xl overflow-hidden md:hidden mx-auto w-full origin-top"
             >
-              <div className="p-4 flex flex-col gap-1">
+              <div className="p-4 flex flex-col gap-1" style={{
+                backdropFilter: "blur(12px)",
+                WebkitBackdropFilter: "blur(12px)",
+              }}>
                 {navLinks.map((link) => (
                   <Link
                     key={link.label}

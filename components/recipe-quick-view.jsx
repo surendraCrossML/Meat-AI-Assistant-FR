@@ -20,7 +20,7 @@ export default function RecipeQuickView({ recipe, onClose }) {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 z-[60] flex items-center justify-center p-4 md:p-8"
+        className="fixed inset-0 z-60 flex items-center justify-center p-4 md:p-8"
         onClick={onClose}
       >
         {/* Backdrop */}
@@ -44,13 +44,13 @@ export default function RecipeQuickView({ recipe, onClose }) {
           </button>
 
           {/* Left Side - Image & Meta */}
-          <div className="w-full md:w-[45%] relative min-h-[350px] md:h-auto flex-shrink-0">
+          <div className="w-full md:w-[45%] relative min-h-[350px] md:h-auto shrink-0">
             <img
               src={recipe.image}
               alt={recipe.title}
               className="absolute inset-0 w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+            <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/40 to-transparent" />
 
             <div className="absolute bottom-0 left-0 p-8 w-full text-white">
               {recipe.badge && (
@@ -98,7 +98,7 @@ export default function RecipeQuickView({ recipe, onClose }) {
           </div>
 
           {/* Right Side - Scrollable Content */}
-          <div className="flex-1 overflow-y-auto p-8 md:p-10 custom-scrollbar bg-background text-foreground">
+          <div className="flex-1 overflow-y-auto p-8 md:p-10 custom-scrollbar bg-background glass text-foreground">
             <p className="text-lg leading-relaxed mb-10 pb-8 border-b border-border/50 text-foreground/80">
               {recipe.description}
             </p>
@@ -113,7 +113,7 @@ export default function RecipeQuickView({ recipe, onClose }) {
                 <ul className="space-y-4">
                   {recipe.ingredients.map((ingredient, i) => (
                     <li key={i} className="flex items-start gap-3 text-[15px] font-medium text-foreground/80">
-                      <div className="w-1.5 h-1.5 rounded-full bg-[#E86A33] dark:bg-[#FF7A3C] mt-2 flex-shrink-0" />
+                      <div className="w-1.5 h-1.5 rounded-full bg-[#E86A33] dark:bg-[#FF7A3C] mt-2 shrink-0" />
                       <span className="leading-relaxed">{ingredient}</span>
                     </li>
                   ))}
@@ -129,7 +129,7 @@ export default function RecipeQuickView({ recipe, onClose }) {
                 <div className="space-y-8">
                   {recipe.instructions.map((step, i) => (
                     <div key={i} className="flex gap-5">
-                      <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#E86A33]/10 dark:bg-[#FF7A3C]/10 text-[#E86A33] dark:text-[#FF7A3C] flex items-center justify-center text-sm font-bold mt-0.5 shadow-sm border border-[#E86A33]/20">
+                      <div className="shrink-0 w-8 h-8 rounded-full bg-[#E86A33]/10 dark:bg-[#FF7A3C]/10 text-[#E86A33] dark:text-[#FF7A3C] flex items-center justify-center text-sm font-bold mt-0.5 shadow-sm border border-[#E86A33]/20">
                         {i + 1}
                       </div>
                       <p className="text-[15px] text-foreground/80 leading-relaxed pt-1">
