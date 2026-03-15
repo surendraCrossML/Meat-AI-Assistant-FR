@@ -1,36 +1,41 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect, useCallback } from "react";
+import {
+  CHAT_API_ROUTE,
+  CHAT_STORAGE_KEY,
+  CHAT_WELCOME_MESSAGE,
+  CHAT_ERROR_MESSAGE,
+} from "@/constants";
 
 const ChatbotContext = createContext(null);
 
+const WELCOME_MESSAGE = {
+  id: "welcome",
+  role: "assistant",
+  content: CHAT_WELCOME_MESSAGE,
+  isTicket: false,
+};
+
 export function ChatbotProvider({ children }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState([
-    {
-      id: "welcome",
-      role: "assistant",
-      content:
-        "Hi there! I am the Meato Assistant. How can I help you find the perfect cut today?",
-    },
-  ]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [messages, setMessages] = useState([WELCOME_MESSAGE]);
 
-  // Load from localStorage on mount
+  // ── Persist: load from localStorage on mount ──────────────────────────────
   useEffect(() => {
     try {
-      const saved = localStorage.getItem("meato-chat-messages");
-      if (saved) {
-        setMessages(JSON.parse(saved));
-      }
+      const saved = localStorage.getItem(CHAT_STORAGE_KEY);
+      if (saved) setMessages(JSON.parse(saved));
     } catch (e) {
       console.warn("Failed to load chat messages from localStorage", e);
     }
   }, []);
 
-  // Save to localStorage whenever messages change
+  // ── Persist: save whenever messages change ────────────────────────────────
   useEffect(() => {
     try {
-      localStorage.setItem("meato-chat-messages", JSON.stringify(messages));
+      localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(messages));
     } catch (e) {
       console.warn("Failed to save chat messages to localStorage", e);
     }
@@ -39,37 +44,68 @@ export function ChatbotProvider({ children }) {
   const toggleChat = () => setIsOpen((prev) => !prev);
   const closeChat = () => setIsOpen(false);
 
-  // Mock AI response delay
-  const addMessage = (content, role = "user") => {
-    const newMessage = { id: Date.now().toString(), role, content };
-    setMessages((prev) => [...prev, newMessage]);
+  // ── Send a user message and fetch an AI response ──────────────────────────
+  const addMessage = useCallback(async (content) => {
+    if (!content?.trim()) return;
 
-    if (role === "user") {
-      setTimeout(() => {
-        const botResponse = {
-          id: (Date.now() + 1).toString(),
+    const userMessage = {
+      id: Date.now().toString(),
+      role: "user",
+      content: content.trim(),
+      isTicket: false,
+    };
+
+    setMessages((prev) => [...prev, userMessage]);
+    setIsLoading(true);
+
+    try {
+      const res = await fetch(CHAT_API_ROUTE, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query: content.trim() }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data?.error ?? "API error");
+      }
+
+      const isTicket = Boolean(data.isTicketRequired);
+
+      const botMessage = {
+        id: (Date.now() + 1).toString(),
+        role: "assistant",
+        // Show userNotification when a ticket is required, otherwise show the full answer
+        content: isTicket ? data.userNotification : data.message,
+        isTicket,
+      };
+
+      setMessages((prev) => [...prev, botMessage]);
+    } catch (err) {
+      console.error("[chatbot] error fetching response:", err);
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: (Date.now() + 2).toString(),
           role: "assistant",
-          content: generateMockResponse(content),
-        };
-        setMessages((prev) => [...prev, botResponse]);
-      }, 1000); // 1-second simulated typing delay
+          content: CHAT_ERROR_MESSAGE,
+          isTicket: false,
+          isError: true,
+        },
+      ]);
+    } finally {
+      setIsLoading(false);
     }
-  };
+  }, []);
 
   const clearChat = () => {
-    setMessages([
-      {
-        id: "welcome",
-        role: "assistant",
-        content:
-          "Hi there! I am the Meato Assistant. How can I help you find the perfect cut today?",
-      },
-    ]);
+    setMessages([WELCOME_MESSAGE]);
   };
 
   return (
     <ChatbotContext.Provider
-      value={{ isOpen, toggleChat, closeChat, messages, addMessage, clearChat }}
+      value={{ isOpen, toggleChat, closeChat, messages, addMessage, clearChat, isLoading }}
     >
       {children}
     </ChatbotContext.Provider>
@@ -80,28 +116,4 @@ export function useChatbot() {
   const ctx = useContext(ChatbotContext);
   if (!ctx) throw new Error("useChatbot must be used inside <ChatbotProvider>");
   return ctx;
-}
-
-// Simple mock logic for the initial version
-function generateMockResponse(userInput) {
-  const text = userInput.toLowerCase();
-
-  if (text.includes("wagyu")) {
-    return "Yes! Our Wagyu Ribeye and Wagyu Striploin are currently available in the Premium Steaks section. They are rated A5 and feature exceptional marbling.";
-  }
-  if (text.includes("delivery") || text.includes("shipping")) {
-    return "We offer guaranteed overnight cold-chain delivery. Orders placed before noon are shipped same day in insulated packaging.";
-  }
-  if (
-    text.includes("bbq") ||
-    text.includes("grill") ||
-    text.includes("barbeque")
-  ) {
-    return "For the grill, I highly recommend our BBQ Rib Pack or the classic Angus Sirloin. Both are fantastic over an open flame!";
-  }
-  if (text.includes("hello") || text.includes("hi")) {
-    return "Hello again! What kind of meat are you looking to cook today?";
-  }
-
-  return "Thank you for reaching out. I am currently a simulated assistant, so I may not have the exact answer for that yet. Can I help you find a specific steak or cut?";
 }
